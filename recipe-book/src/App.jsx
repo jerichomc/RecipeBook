@@ -3,30 +3,56 @@ import './index.css';
 
 function App() {
   const [recipes, updateRecipes] = useState(() => { // Initialize recipes from localStorage if available
-    const savedRecipes = localStorage.getItem('recipes');
-    return savedRecipes ? JSON.parse(savedRecipes) : [];
+    const savedRecipes = localStorage.getItem('recipes'); // Retrieve saved recipes from localStorage
+    return savedRecipes ? JSON.parse(savedRecipes) : []; // Start with an empty array if no recipes are saved
   });
   const [recipeCount, updateRecipeCount] = useState(() => { // Initialize recipe count based on the number of recipes in localStorage
-    const savedRecipes = localStorage.getItem('recipes');
-    return savedRecipes ? JSON.parse(savedRecipes).length : 0;
+    const savedRecipes = localStorage.getItem('recipes'); // Retrieve saved recipes from localStorage
+    return savedRecipes ? JSON.parse(savedRecipes).length : 0; // Set recipe count to the number of saved recipes or 0 if none are saved
   });
   const [showForm, updateShowForm] = useState(false);
   const [recipeName, updateRecipeName] = useState('');
   const [ingredients, updateIngredients] = useState('');
   const [instructions, updateInstructions] = useState('');
+  const [editForm, updateEditForm] = useState(false);
+  const [editingRecipeId, setEditingRecipeId] = useState(null);
   
 
   function addRecipe(nextRecipeName, nextIngredients, nextInstructions) { // Create a new recipe object with a unique ID
     const newRecipe = {
-      id: recipeCount + 1,
+      id: crypto.randomUUID(),
       recipeName: nextRecipeName,
       ingredients: nextIngredients,
       instructions: nextInstructions,
     };
 
-    updateRecipes([...recipes, newRecipe]);
+    updateRecipes([...recipes, newRecipe]); // Add the new recipe to the existing list of recipes
     updateRecipeCount(recipeCount + 1);
   }
+
+  function deleteRecipe(recipeId){ // Remove the recipe with the specified ID from the list of recipes
+    const updatedRecipes = recipes.filter(recipe => recipe.id !== recipeId); //creates new array excluding the recipe with the specified ID
+    updateRecipes(updatedRecipes);//update the recipes state with new array of recipes that does not include the deleted recipe
+    localStorage.setItem('recipes', JSON.stringify(updatedRecipes)); // Update localStorage with the new list of recipes after deletion
+  }
+
+  function editRecipe(recipeId, updatedName, updatedIngredients, updatedInstructions){ // Update the recipe with the specified ID using the provided updated values
+    const updatedRecipes = recipes.map(recipe => {
+      if (recipe.id === recipeId){
+        return {
+          ...recipe, // Spread the existing recipe properties to maintain any unchanged values
+          recipeName: updatedName,
+          ingredients: updatedIngredients,
+          instructions: updatedInstructions,
+        }
+      }
+      return recipe; // Return the recipe unchanged if it doesn't match the ID
+    })
+    updateRecipes(updatedRecipes); // Update the recipes state with the modified list of recipes after editing
+    localStorage.setItem('recipes', JSON.stringify(updatedRecipes)); // Update localStorage with the new list of recipes after editing
+  }
+
+
 
   return (
     <div className="App">
@@ -46,7 +72,7 @@ function App() {
           {showForm && (
             <div className="recipe-form">
               <h3>Add a New Recipe</h3>
-              <input value={recipeName} onChange={(e) => updateRecipeName(e.target.value)} />
+              <input value={recipeName} onChange={(e) => updateRecipeName(e.target.value)} /> //
               <textarea value={ingredients} onChange={(e) => updateIngredients(e.target.value)} placeholder="Ingredients (separate by commas)" />
               <textarea value={instructions} onChange={(e) => updateInstructions(e.target.value)} placeholder="Instructions" />
               <button onClick={() => {
@@ -62,6 +88,7 @@ function App() {
                 updateIngredients('');
                 updateInstructions('');
               }}>Add Recipe</button>
+              <button onClick={() => updateShowForm(false)}>Cancel</button>
             </div>
             )}
         </section>
@@ -79,10 +106,41 @@ function App() {
                       <h4>{recipe.recipeName}</h4>
                       <p><strong>Ingredients:</strong> {recipe.ingredients}</p>
                       <p><strong>Instructions:</strong> {recipe.instructions}</p>
+                      <button onClick={() => deleteRecipe(recipe.id)}>Delete</button>
+                      <button onClick={() => {
+                        setEditingRecipeId(recipe.id);
+                        updateRecipeName(recipe.recipeName);
+                        updateIngredients(recipe.ingredients);
+                        updateInstructions(recipe.instructions);
+                        updateEditForm(true);
+                      }}>Edit</button>
                     </li>
                   )
                 })}
               </ul>
+              {editForm && (
+                <div className="recipe-form">
+                  <h3>Edit Recipe</h3>
+                  <input value={recipeName} onChange={(e) => updateRecipeName(e.target.value)} /> //
+                  <textarea value={ingredients} onChange={(e) => updateIngredients(e.target.value)} placeholder="Ingredients (separate by commas)" />
+                  <textarea value={instructions} onChange={(e) => updateInstructions(e.target.value)} placeholder="Instructions" />
+                  <button onClick={() => {
+                    editRecipe(editingRecipeId, recipeName, ingredients, instructions);
+                    updateEditForm(false);
+                    setEditingRecipeId(null);
+                    updateRecipeName('');
+                    updateIngredients('');
+                    updateInstructions('');
+                  }}>Save Changes</button>
+                  <button onClick={() => {
+                    updateEditForm(false);
+                    setEditingRecipeId(null);
+                    updateRecipeName('');
+                    updateIngredients('');
+                    updateInstructions('');
+                  }}>Cancel</button>
+                </div>
+              )}
               </div>
             )}
           </div>
