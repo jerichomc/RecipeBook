@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./index.css";
+
 
 function App() {
   const [recipes, updateRecipes] = useState(() => {
@@ -13,6 +13,7 @@ function App() {
     return savedRecipes ? JSON.parse(savedRecipes).length : 0; // Set recipe count to the number of saved recipes or 0 if none are saved
   });
   const [showForm, updateShowForm] = useState(false);
+
   const [recipeName, updateRecipeName] = useState("");
 
   const [ingredients, updateIngredients] = useState([]);
@@ -22,6 +23,7 @@ function App() {
   const [instructionInput, updateInstructionInput] = useState("");
 
   const [editForm, updateEditForm] = useState(false);
+
   const [editingRecipeId, setEditingRecipeId] = useState(null);
 
   function addRecipe(nextRecipeName, nextIngredients, nextInstructions) {
@@ -33,7 +35,7 @@ function App() {
       instructions: nextInstructions,
     };
 
-    const updatedRecipes = [...recipes, newRecipe]; // Add the new recipe to the existing list of recipes
+    const updatedRecipes = [...recipes, newRecipe]; // Creates new array with new recipe appended to the end of the existing recipes array
     updateRecipes(updatedRecipes); // Update the recipes state with the new list of recipes that includes the added recipe
     localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Save the updated list of recipes to localStorage for persistence
     updateRecipeCount(recipeCount + 1); // Increment the recipe count by 1 after adding a new recipe
@@ -89,12 +91,13 @@ function App() {
 
   function removeIngredient(indexToRemove) {
     updateIngredients(
-      ingredients.filter((_, index) => index !== indexToRemove),
+      ingredients.filter((_, index) => index !== indexToRemove), // Create a new array of ingredients that excludes the ingredient at the specified index
     );
   }
   function removeInstruction(indexToRemove) {
     updateInstructions(
-      instructions.filter((_, index) => index !== indexToRemove),
+      instructions.filter((_, index) => index !== indexToRemove), // Create a new array of instructions that excludes the instruction at the specified index
+
     );
   }
 
