@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar";
 
 function Groceries() {
   return (
-    <div>
+    <div className="App">
       <Navbar />
-      <h1>Recipes</h1>
+      <h1>Groceries</h1>
     </div>
   )
 }
