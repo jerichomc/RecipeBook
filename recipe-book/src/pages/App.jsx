@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
 
 
 function App() {
@@ -103,11 +104,12 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar />
       <header className="header">
         <h1>Recipe Book</h1>
         <p>JERICHO HUNGEY!!! WHAT MAKE?</p>
       </header>
-      <nav></nav>
+      
 
       <main className="main-content">
         <section className="hero">
