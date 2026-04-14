@@ -7,7 +7,7 @@ const Navbar = () => {
   <Link to="/" className="navbar-brand">
     <span className="navbar-logo-wrap">
       <BiLogoReact className="navbar-logo" />
-      <span className="navbar-title">React Router</span>
+      <span className="navbar-title">Recipe Book</span>
     </span>
   </Link>
 
