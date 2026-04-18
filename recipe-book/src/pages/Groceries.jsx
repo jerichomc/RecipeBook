@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import RecipeCard from "../components/RecipeCard";
 
 function Groceries() {
 
@@ -14,30 +15,30 @@ function Groceries() {
   function clearGroceryList() {
     updateGroceryList([]);
   }
+  function handleAddGroceries(recipe){
+    updateGroceryList([...groceryList, recipe.ingredients]);
+  }
+
+  function handleAddIngredient(ingredient) {
+    updateGroceryList([...groceryList, ingredient]);
+  }
 
   return (
     <div className="App">
       <Navbar />
       <h1>Groceries</h1>
-      <div className="recipe-list">
-        {recipes.map((recipe, index) => (
-          <div key={index} className="recipe-card">
-            <h2>{recipe.recipeName}</h2>
-            <h3>Ingredients:</h3>
-            <ul>
-              {recipe.ingredients.map((ingredient, idx) => (
-                <li key={idx}>
-                  {ingredient}
-                  <button onClick={() => updateGroceryList([...groceryList, ingredient])}>
-                Add
-              </button>
-                </li>
-              ))}
-              
-            </ul>
-          </div>
+        <div className="recipe-list"> 
+        {recipes.map((recipe) => (
+          <RecipeCard
+            key={recipe.id}
+            recipe={recipe}
+            showIngredients={true}
+            onAddIngredientToGroceries={handleAddIngredient}
+            showInstructions={false}
+
+          />
         ))}
-      </div>
+        </div>
       <div>
         <h2>Grocery List</h2>
         {groceryList && groceryList.length > 0 ? (

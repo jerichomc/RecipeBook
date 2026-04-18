@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import RecipeCard from "../components/RecipeCard";
 
 function Recipes() {
   const [recipes, updateRecipes] = useState(() => {
@@ -26,10 +27,11 @@ function Recipes() {
 
   const filteredRecipes = [...recipes].filter((recipe)=> { // Filter recipes based on search term
     const query = searchTerm.toLowerCase().trim(); // Normalize search term
-
+      //searchTerm is a state that starts emoty and returns all recipes if empty
     if (!query) return true; // If search term is empty, include all recipes
 
     const nameMatch = recipe.recipeName.toLowerCase().includes(query); // Check if recipe name matches search term
+    
     const ingredientMatch = recipe.ingredients.some((ingredient) => {
       return ingredient.toLowerCase().includes(query) // Check if any ingredient matches search term
     });
@@ -124,6 +126,15 @@ function Recipes() {
     );
   }
 
+  function handleEdit(recipe) {
+  setEditingRecipeId(recipe.id);
+  updateRecipeName(recipe.recipeName);
+  updateIngredients(recipe.ingredients);
+  updateInstructions(recipe.instructions);
+  updateEditForm(true);
+}
+
+
   return (
     <div className="App">
       <Navbar />
@@ -214,47 +225,13 @@ function Recipes() {
             {recipes && recipes.length > 0 && (
               <div>
                 <ul>
-                  {filteredRecipes.map((recipe) => {
-                    return (
-                      <li className="recipe-card" key={recipe.id}>
-                        <h4>{recipe.recipeName}</h4>
-
-                        <p>
-                          <strong>Ingredients:</strong>
-                        </p>
-                        <ul>
-                          {recipe.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                          ))}
-                        </ul>
-
-                        <p>
-                          <strong>Instructions:</strong>
-                        </p>
-                        <ol>
-                          {recipe.instructions.map((instruction, index) => (
-                            <li key={index}>{instruction}</li>
-                          ))}
-                        </ol>
-
-                        <button onClick={() => deleteRecipe(recipe.id)}>
-                          Delete
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            setEditingRecipeId(recipe.id);
-                            updateRecipeName(recipe.recipeName);
-                            updateIngredients(recipe.ingredients);
-                            updateInstructions(recipe.instructions);
-                            updateEditForm(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </li>
-                    );
-                  })}
+                  {filteredRecipes.map((recipe) => (
+                    <RecipeCard key={recipe.id}
+                    recipe={recipe}
+                    onEdit={handleEdit}
+                    onDelete={deleteRecipe}
+                    />
+                  ))}
                 </ul>
 
                 {editForm && (
