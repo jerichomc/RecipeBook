@@ -19,7 +19,7 @@ function Groceries() {
     updateGroceryList([...groceryList, recipe.ingredients]);
   }
 
-  function handleAddIngredient(ingredient) {
+  function handleAddIngredient(ingredient) { //creates new array with existing grocery list and new ingredient added to it
     updateGroceryList([...groceryList, ingredient]);
   }
 

@@ -88,3 +88,8 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
     transform: translateY(-2px);
 }
+
+#sort-label {
+    margin-right: 20px;
+    font-weight: bold;
+}

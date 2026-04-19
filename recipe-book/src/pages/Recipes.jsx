@@ -23,7 +23,7 @@ function Recipes() {
   const [editForm, updateEditForm] = useState(false);
   const [editingRecipeId, setEditingRecipeId] = useState(null);
   const [searchTerm, updateSearchTerm] = useState("");
-  const [sortOrder, updateSortOrder] = useState("asc");
+  const [sortOrder, updateSortOrder] = useState("newest");
 
   const filteredRecipes = [...recipes].filter((recipe)=> { // Filter recipes based on search term
     const query = searchTerm.toLowerCase().trim(); // Normalize search term
@@ -49,10 +49,10 @@ function Recipes() {
       case "z-a":
         return b.recipeName.localeCompare(a.recipeName); // Sort recipes in reverse alphabetical order by name
       case "oldest":
-        return 0; // Keep original order (oldest first)
+        return new Date(a.createdAt) - new Date(b.createdAt); // Sort recipes by creation date (oldest first)
       case "newest":
       default:
-        return 0; // Keep original order (newest first)
+        return new Date(b.createdAt) - new Date(a.createdAt); // Sort recipes by creation date (newest first)
     }
   })
 
@@ -63,6 +63,7 @@ function Recipes() {
       recipeName: nextRecipeName,
       ingredients: nextIngredients,
       instructions: nextInstructions,
+      createdAt: new Date().toISOString(),
     };
 
     const updatedRecipes = [...recipes, newRecipe];
@@ -217,9 +218,18 @@ function Recipes() {
         <section className="features">
           <div className="feature-card">
             <h3>Browse Recipes</h3>
+            
             <input value={searchTerm} onChange={(e) => {
               updateSearchTerm(e.target.value);
             }}></input>
+            <br />
+            <label id="sort-label">Sort</label>
+            <select value={sortOrder} onChange={(e) => updateSortOrder(e.target.value)}>
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="a-z">A-Z</option>
+              <option value="z-a">Z-A</option>
+            </select>
             
 
             {recipes && recipes.length > 0 && (
