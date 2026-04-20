@@ -8,10 +8,6 @@ function Recipes() {
     return savedRecipes ? JSON.parse(savedRecipes) : [];
   });
 
-  const [recipeCount, updateRecipeCount] = useState(() => {
-    const savedRecipes = localStorage.getItem("recipes");
-    return savedRecipes ? JSON.parse(savedRecipes).length : 0;
-  });
 
   
   const [showForm, updateShowForm] = useState(false);
@@ -24,6 +20,7 @@ function Recipes() {
   const [editingRecipeId, setEditingRecipeId] = useState(null);
   const [searchTerm, updateSearchTerm] = useState("");
   const [sortOrder, updateSortOrder] = useState("newest");
+
 
   const filteredRecipes = [...recipes].filter((recipe)=> { // Filter recipes based on search term
     const query = searchTerm.toLowerCase().trim(); // Normalize search term
@@ -69,7 +66,6 @@ function Recipes() {
     const updatedRecipes = [...recipes, newRecipe];
     updateRecipes(updatedRecipes);
     localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
-    updateRecipeCount(recipeCount + 1);
   }
 
   function deleteRecipe(recipeId) {
@@ -210,36 +206,59 @@ function Recipes() {
                 Save
               </button>
 
-              <button onClick={() => updateShowForm(false)}>Cancel</button>
+              <button
+                onClick={() => {
+                  updateShowForm(false);
+                  updateRecipeName("");
+                  updateIngredients([]);
+                  updateInstructions([]);
+                  updateIngredientInput("");
+                  updateInstructionInput("");
+                }}
+              >
+                Cancel
+              </button>
             </div>
           )}
         </section>
 
         <section className="features">
           <div className="feature-card">
-            <h3>Browse Recipes</h3>
-            
-            <input value={searchTerm} onChange={(e) => {
-              updateSearchTerm(e.target.value);
-            }}></input>
+            <h3>
+              Showing <em>{filteredRecipes.length}</em> of <em>{recipes.length}</em> Recipes
+            </h3>
+
+            <input
+              value={searchTerm}
+              onChange={(e) => {
+                updateSearchTerm(e.target.value);
+              }}
+            ></input>
             <br />
             <label id="sort-label">Sort</label>
-            <select value={sortOrder} onChange={(e) => updateSortOrder(e.target.value)}>
+            <select
+              value={sortOrder}
+              onChange={(e) => updateSortOrder(e.target.value)}
+            >
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
               <option value="a-z">A-Z</option>
               <option value="z-a">Z-A</option>
             </select>
-            
 
-            {recipes && recipes.length > 0 && (
+            {recipes.length === 0 ? (
+              <p><b>No recipes yet. Add your first recipe to get started.</b></p>
+            ) : filteredRecipes.length === 0 ? (
+              <p><b>No recipes matched your search.</b></p>
+            ) : (
               <div>
                 <ul>
                   {filteredRecipes.map((recipe) => (
-                    <RecipeCard key={recipe.id}
-                    recipe={recipe}
-                    onEdit={handleEdit}
-                    onDelete={deleteRecipe}
+                    <RecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      onEdit={handleEdit}
+                      onDelete={deleteRecipe}
                     />
                   ))}
                 </ul>
