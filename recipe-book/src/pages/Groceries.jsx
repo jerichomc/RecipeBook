@@ -10,17 +10,21 @@ function Groceries() {
       return savedRecipes ? JSON.parse(savedRecipes) : []; // Start with an empty array if no recipes are saved
     });
 
-  const [groceryList, updateGroceryList] = useState([]);
+  const [groceryList, updateGroceryList] = useState({});
 
   function clearGroceryList() {
-    updateGroceryList([]);
-  }
-  function handleAddGroceries(recipe){
-    updateGroceryList([...groceryList, recipe.ingredients]);
+    updateGroceryList({});
   }
 
   function handleAddIngredient(ingredient) { //creates new array with existing grocery list and new ingredient added to it
-    updateGroceryList([...groceryList, ingredient]);
+    const key = ingredient.toLowerCase();
+    if (groceryList[key]){
+      updateGroceryList({...groceryList, [key]: groceryList[key] + 1 });
+      return;
+    } else {
+      updateGroceryList({ ...groceryList, [key]: 1 });
+    }
+
   }
 
   return (
@@ -41,12 +45,17 @@ function Groceries() {
         </div>
       <div>
         <h2>Grocery List</h2>
-        {groceryList && groceryList.length > 0 ? (
+        {groceryList && Object.keys(groceryList).length > 0 ? (
           <ul>
-            {groceryList.map((item, index) => (
+            {Object.entries(groceryList).map((item, index) => (
               <li key={index}>
-                {item}
-                <button onClick={() => updateGroceryList(groceryList.filter((_, i) => i !== index))}>
+                {item[0]} {item[1] > 1 ? `x${item[1]}` : ""}
+                <button onClick={() => {
+                  const updatedList = { ...groceryList };
+                  delete updatedList[item[0]];
+                  updateGroceryList(updatedList);
+                }}>
+
                   Remove
                 </button>
               </li>
