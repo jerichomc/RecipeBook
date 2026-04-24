@@ -93,3 +93,14 @@
     margin-right: 20px;
     font-weight: bold;
 }
+
+.grocery-btn {
+    margin-left: 10px;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+}
+
+.grocery-btn:hover {
+    cursor: pointer;
+    background-color: #334155;
+}

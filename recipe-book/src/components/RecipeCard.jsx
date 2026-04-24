@@ -22,7 +22,7 @@ function RecipeCard({
               <li key={index}>
                 {ingredient}
                 {onAddIngredientToGroceries && (
-                  <button onClick={() => onAddIngredientToGroceries(ingredient)}>
+                  <button onClick={() => onAddIngredientToGroceries(ingredient)} className="grocery-btn">
                     Add
                   </button>
                 )}
