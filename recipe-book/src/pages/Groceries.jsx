@@ -28,9 +28,9 @@ function Groceries() {
 
     if(groceryList[key]) { // Check if the ingredient already exists in the grocery list
       updatedList = {
-        ...groceryList,
+        ...groceryList, //copy the existing grocery list to maintain all other ingredients
         [key]: {
-          ...groceryList[key],
+          ...groceryList[key], // Keep the existing properties of the ingredient
           quantity: groceryList[key].quantity + 1, // If the ingredient already exists, increment the quantity by 1
         },
       };
@@ -51,7 +51,7 @@ function Groceries() {
     const updatedList ={
       ...groceryList,
       [ingredient]: {
-        ...groceryList[ingredient],
+        ...groceryList[ingredient], // Keep the existing properties of the ingredient
         checked: !groceryList[ingredient].checked, // Toggle the checked status of the ingredient
       },
     };
@@ -65,6 +65,14 @@ function Groceries() {
 
   updateGroceryList(updatedList);
   localStorage.setItem("groceryList", JSON.stringify(updatedList));
+}
+
+function clearPurchased(){
+  const updatedList = Object.fromEntries(
+    Object.entries(groceryList).filter(([_, item]) => !item.checked) // Filter out ingredients that are marked as checked (purchased)
+  );
+  updateGroceryList(updatedList);
+  localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Update localStorage with the new grocery list after clearing purchased items
 }
 
 
@@ -95,7 +103,7 @@ function Groceries() {
                     checked={item.checked}
                     onChange={() => toggleIngredientChecked(ingredient)}
                   />
-                  <span>
+                  <span className={item.checked ? "checked" : ""}>
                     {ingredient} {item.quantity > 1 ? `x${item.quantity}` : ""}
                   </span>
                 </label>
@@ -111,7 +119,8 @@ function Groceries() {
         ) : (
           <p>Your grocery list is empty.</p>
         )}
-        <button onClick={clearGroceryList}>Clear List</button>
+        <button onClick={clearGroceryList}>Clear</button>
+        <button onClick={clearPurchased}>Clear Purchased</button>
       </div>
     </div>
   );

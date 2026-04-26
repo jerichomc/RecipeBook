@@ -68,8 +68,8 @@
 }
 
 .navbar-link:hover {
-  color: #7dd3fc;
-  background-color: #334155;
+  color: #A47251;
+  background-color: #DCF0C3;
   scale: 1.10;
 }
 
@@ -102,5 +102,10 @@
 
 .grocery-btn:hover {
     cursor: pointer;
-    background-color: #334155;
+    background-color: #A47251;
+}
+
+.checked {
+    text-decoration: line-through;
+    color: #888;
 }
