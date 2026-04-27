@@ -75,6 +75,36 @@ function clearPurchased(){
   localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Update localStorage with the new grocery list after clearing purchased items
 }
 
+function decrementIngredient(ingredient) {
+  if(groceryList[ingredient] && groceryList[ingredient].quantity === 1){
+    removeIngredientFromGroceries(ingredient); // If the quantity of the ingredient is 1, remove it from the grocery list
+  }
+  else if(groceryList[ingredient] && groceryList[ingredient].quantity > 1){
+    const updatedList = {
+      ...groceryList,
+      [ingredient]: {
+        ...groceryList[ingredient], // Keep the existing properties of the ingredient
+        quantity: groceryList[ingredient].quantity - 1, // Decrement the quantity of the ingredient by 1
+      }
+    };
+    updateGroceryList(updatedList);
+    localStorage.setItem("groceryList", JSON.stringify(updatedList));
+  }
+}
+
+function incrementIngredient(ingredient) {
+  if(groceryList[ingredient]){
+    const updatedList = {
+      ...groceryList,
+      [ingredient]: {
+        ...groceryList[ingredient], // Keep the existing properties of the ingredient
+        quantity: groceryList[ingredient].quantity + 1, // Increment the quantity of the ingredient by 1
+      }
+    };
+    updateGroceryList(updatedList);
+    localStorage.setItem("groceryList", JSON.stringify(updatedList));
+  }
+}
 
   return (
     <div className="App">
@@ -107,6 +137,8 @@ function clearPurchased(){
                     {ingredient} {item.quantity > 1 ? `x${item.quantity}` : ""}
                   </span>
                 </label>
+                <button onClick={() => decrementIngredient(ingredient)}>-</button>
+                <button onClick={() => incrementIngredient(ingredient)}>+</button>
 
                 <button
                   onClick={() => removeIngredientFromGroceries(ingredient)}
