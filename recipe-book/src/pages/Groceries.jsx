@@ -107,55 +107,69 @@ function incrementIngredient(ingredient) {
 }
 
   return (
-    <div className="App">
-      <Navbar />
-      <h1>Groceries</h1>
-      <div className="recipe-list">
-        {recipes.map((recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            recipe={recipe}
-            showIngredients={true}
-            onAddIngredientToGroceries={handleAddIngredient}
-            showInstructions={false}
-          />
-        ))}
-      </div>
-      <div>
-        <h2>Grocery List</h2>
-        {groceryList && Object.keys(groceryList).length > 0 ? (
-          <ul>
-            {Object.entries(groceryList).map(([ingredient, item]) => (
-              <li key={ingredient}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => toggleIngredientChecked(ingredient)}
-                  />
-                  <span className={item.checked ? "checked" : ""}>
-                    {ingredient} {item.quantity > 1 ? `x${item.quantity}` : ""}
-                  </span>
-                </label>
-                <button onClick={() => decrementIngredient(ingredient)}>-</button>
-                <button onClick={() => incrementIngredient(ingredient)}>+</button>
+  <div className="App">
+    <Navbar />
+    <h1>Groceries</h1>
 
-                <button
-                  onClick={() => removeIngredientFromGroceries(ingredient)}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Your grocery list is empty.</p>
-        )}
-        <button onClick={clearGroceryList}>Clear</button>
-        <button onClick={clearPurchased}>Clear Purchased</button>
-      </div>
+    <div className="recipe-list">
+      {recipes.map((recipe) => (
+        <RecipeCard
+          key={recipe.id}
+          recipe={recipe}
+          showIngredients={true}
+          onAddIngredientToGroceries={handleAddIngredient}
+          showInstructions={false}
+        />
+      ))}
     </div>
-  );
+
+    <div className="grocery-panel">
+      <div className="grocery-panel-header">
+        <h2>Grocery List</h2>
+        <div className="grocery-actions">
+          <button onClick={clearPurchased}>Clear Purchased</button>
+          <button onClick={clearGroceryList}>Clear</button>
+        </div>
+      </div>
+
+      {groceryList && Object.keys(groceryList).length > 0 ? (
+        <ul className="grocery-list">
+          {Object.entries(groceryList).map(([ingredient, item]) => (
+            <li key={ingredient} className="grocery-item">
+              <label className="grocery-item-main">
+                <input
+                  type="checkbox"
+                  checked={item.checked}
+                  onChange={() => toggleIngredientChecked(ingredient)}
+                />
+                <span
+                  className={item.checked ? "grocery-name checked" : "grocery-name"}
+                >
+                  {ingredient}
+                </span>
+              </label>
+
+              <div className="grocery-quantity-controls">
+                <button onClick={() => decrementIngredient(ingredient)}>-</button>
+                <span className="grocery-quantity">{item.quantity}</span>
+                <button onClick={() => incrementIngredient(ingredient)}>+</button>
+              </div>
+
+              <button
+                className="grocery-remove-btn"
+                onClick={() => removeIngredientFromGroceries(ingredient)}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="grocery-empty">Your grocery list is empty.</p>
+      )}
+    </div>
+  </div>
+);
 }
 
 export default Groceries;
