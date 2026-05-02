@@ -123,6 +123,15 @@
   background: #fff;
 }
 
+.groceries-search {
+  min-width: 280px;
+  padding: 12px 14px;
+  border: 1px solid #d8b08c;
+  border-radius: 12px;
+  background: #fff;
+  margin-bottom: 5px;
+}
+
 .recipes-sort-group {
   display: flex;
   flex-direction: column;
@@ -504,9 +513,6 @@
   margin: 0;
   color: #6f5a4d;
 }
-
-
-
 
 
 

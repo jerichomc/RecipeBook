@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import RecipeCard from "../components/RecipeCard";
 
 function Groceries() {
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term for filtering recipes
 
   const [recipes, updateRecipes] = useState(() => {
       // Initialize recipes from localStorage if available
@@ -14,6 +15,7 @@ function Groceries() {
     const savedGroceryList = localStorage.getItem("groceryList"); // Retrieve saved grocery list from localStorage
     return savedGroceryList ? JSON.parse(savedGroceryList) : {}; // Start with an empty object if no grocery list is saved
   });
+
 
  function clearGroceryList() {
   const updatedList = {}; // Create an empty object to clear the grocery list
@@ -106,13 +108,35 @@ function incrementIngredient(ingredient) {
   }
 }
 
+const filteredRecipes = [...recipes].filter((recipe)=> { // Filter recipes based on search term
+    const query = searchTerm.toLowerCase().trim(); // Normalize search term
+      //searchTerm is a state that starts emoty and returns all recipes if empty
+    if (!query) return true; // If search term is empty, include all recipes
+
+    const nameMatch = recipe.recipeName.toLowerCase().includes(query); // Check if recipe name matches search term
+    
+    const ingredientMatch = recipe.ingredients.some((ingredient) => {
+      return ingredient.toLowerCase().includes(query) // Check if any ingredient matches search term
+    });
+
+
+    return nameMatch || ingredientMatch // Include recipe if any match is found
+  })
+
   return (
   <div className="App">
     <Navbar />
     <h1>Groceries</h1>
-
+    <input
+              className="groceries-search"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              placeholder="Search by recipe, ingredient, or instruction"
+            />
     <div className="recipe-list">
-      {recipes.map((recipe) => (
+      {filteredRecipes.map((recipe) => (
         <RecipeCard
           key={recipe.id}
           recipe={recipe}
