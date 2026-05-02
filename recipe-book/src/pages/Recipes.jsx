@@ -133,65 +133,78 @@ function Recipes() {
 
 
   return (
-    <div className="App">
-      <Navbar />
-      <main className="recipe-content">
-        <section className="hero">
-          <h2>Welcome to Your Recipe Collection</h2>
-          <p>
-            Find, save, and organize your favorite recipes all in one place.
-          </p>
+  <div className="App">
+    <Navbar />
 
-          <button className="cta-button" onClick={() => updateShowForm(true)}>
+    <main className="recipe-page">
+      <section className="recipe-hero">
+        <div className="recipe-hero-copy">
+          <p className="recipe-eyebrow">Your Digital Cookbook</p>
+          <h2>Build a recipe collection you will actually use.</h2>
+          <p className="recipe-hero-text">
+            Save favorites, search by ingredients, and keep your recipes ready
+            whenever you need them.
+          </p>
+        </div>
+
+        <div className="recipe-hero-actions">
+          <button
+            className="cta-button"
+            onClick={() => updateShowForm(true)}
+          >
             Add Recipe
           </button>
+        </div>
+      </section>
 
-          {showForm && (
-            <div className="recipe-form">
-              <h3>Add a New Recipe</h3>
+      {showForm && (
+        <section className="recipe-form-panel">
+          <div className="recipe-form">
+            <h3>Add a New Recipe</h3>
 
-              <input
-                value={recipeName}
-                onChange={(e) => updateRecipeName(e.target.value)}
-                placeholder="Recipe name"
-              />
+            <input
+              value={recipeName}
+              onChange={(e) => updateRecipeName(e.target.value)}
+              placeholder="Recipe name"
+            />
 
+            <div className="recipe-builder-row">
               <input
                 value={ingredientInput}
                 onChange={(e) => updateIngredientInput(e.target.value)}
                 placeholder="Enter an ingredient"
               />
               <button onClick={addIngredient}>Add Ingredient</button>
+            </div>
 
-              <ul>
-                {ingredients.map((ingredient, index) => (
-                  <li key={index}>
-                    {ingredient}
-                    <button onClick={() => removeIngredient(index)}>
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
+            <ul className="recipe-builder-list">
+              {ingredients.map((ingredient, index) => (
+                <li key={index}>
+                  <span>{ingredient}</span>
+                  <button onClick={() => removeIngredient(index)}>Remove</button>
+                </li>
+              ))}
+            </ul>
 
+            <div className="recipe-builder-row">
               <input
                 value={instructionInput}
                 onChange={(e) => updateInstructionInput(e.target.value)}
                 placeholder="Enter a step"
               />
               <button onClick={addInstruction}>Add Step</button>
+            </div>
 
-              <ol>
-                {instructions.map((instruction, index) => (
-                  <li key={index}>
-                    {instruction}
-                    <button onClick={() => removeInstruction(index)}>
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ol>
+            <ol className="recipe-builder-list recipe-builder-list-numbered">
+              {instructions.map((instruction, index) => (
+                <li key={index}>
+                  <span>{instruction}</span>
+                  <button onClick={() => removeInstruction(index)}>Remove</button>
+                </li>
+              ))}
+            </ol>
 
+            <div className="recipe-form-actions">
               <button
                 onClick={() => {
                   addRecipe(recipeName, ingredients, instructions);
@@ -219,150 +232,161 @@ function Recipes() {
                 Cancel
               </button>
             </div>
-          )}
+          </div>
         </section>
+      )}
 
-        <section className="features">
-          <div className="feature-card">
+      <section className="recipes-panel">
+        <div className="recipes-panel-header">
+          <div>
+            <p className="recipes-kicker">Browse Recipes</p>
             <h3>
-              Showing <em>{filteredRecipes.length}</em> of <em>{recipes.length}</em> Recipes
+              Showing <em>{filteredRecipes.length}</em> of <em>{recipes.length}</em>{" "}
+              recipes
             </h3>
+          </div>
 
+          <div className="recipes-controls">
             <input
+              className="recipes-search"
               value={searchTerm}
               onChange={(e) => {
                 updateSearchTerm(e.target.value);
               }}
-            ></input>
-            <br />
-            <label id="sort-label">Sort</label>
-            <select
-              value={sortOrder}
-              onChange={(e) => updateSortOrder(e.target.value)}
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="a-z">A-Z</option>
-              <option value="z-a">Z-A</option>
-            </select>
+              placeholder="Search by recipe, ingredient, or instruction"
+            />
 
-            {recipes.length === 0 ? (
-              <p><b>No recipes yet. Add your first recipe to get started.</b></p>
-            ) : filteredRecipes.length === 0 ? (
-              <p><b>No recipes matched your search.</b></p>
-            ) : (
-              <div>
-                <ul>
-                  {filteredRecipes.map((recipe) => (
-                    <RecipeCard
-                      key={recipe.id}
-                      recipe={recipe}
-                      onEdit={handleEdit}
-                      onDelete={deleteRecipe}
-                    />
-                  ))}
-                </ul>
-
-                {editForm && (
-                  <div className="recipe-form">
-                    <h3>Edit Recipe</h3>
-
-                    <input
-                      value={recipeName}
-                      onChange={(e) => updateRecipeName(e.target.value)}
-                      placeholder="Recipe name"
-                    />
-
-                    <input
-                      value={ingredientInput}
-                      onChange={(e) => updateIngredientInput(e.target.value)}
-                      placeholder="Enter an ingredient"
-                    />
-                    <button onClick={addIngredient}>Add Ingredient</button>
-
-                    <ul>
-                      {ingredients.map((ingredient, index) => (
-                        <li key={index}>
-                          {ingredient}
-                          <button onClick={() => removeIngredient(index)}>
-                            Remove
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <input
-                      value={instructionInput}
-                      onChange={(e) => updateInstructionInput(e.target.value)}
-                      placeholder="Enter a step"
-                    />
-                    <button onClick={addInstruction}>Add Step</button>
-
-                    <ol>
-                      {instructions.map((instruction, index) => (
-                        <li key={index}>
-                          {instruction}
-                          <button onClick={() => removeInstruction(index)}>
-                            Remove
-                          </button>
-                        </li>
-                      ))}
-                    </ol>
-
-                    <button
-                      onClick={() => {
-                        editRecipe(
-                          editingRecipeId,
-                          recipeName,
-                          ingredients,
-                          instructions,
-                        );
-                        updateEditForm(false);
-                        setEditingRecipeId(null);
-                        updateRecipeName("");
-                        updateIngredients([]);
-                        updateInstructions([]);
-                        updateIngredientInput("");
-                        updateInstructionInput("");
-                      }}
-                    >
-                      Save Changes
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        updateEditForm(false);
-                        setEditingRecipeId(null);
-                        updateRecipeName("");
-                        updateIngredients([]);
-                        updateInstructions([]);
-                        updateIngredientInput("");
-                        updateInstructionInput("");
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="recipes-sort-group">
+              <label htmlFor="recipe-sort">Sort</label>
+              <select
+                id="recipe-sort"
+                value={sortOrder}
+                onChange={(e) => updateSortOrder(e.target.value)}
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+              </select>
+            </div>
           </div>
+        </div>
 
-          <div className="feature-card">
-            <h3>Save Favorites</h3>
-            <p>
-              Keep track of your favorite recipes in your personal collection.
-            </p>
+        {recipes.length === 0 ? (
+          <div className="recipes-empty-state">
+            <h4>No recipes yet</h4>
+            <p>Add your first recipe to start building your collection.</p>
           </div>
+        ) : filteredRecipes.length === 0 ? (
+          <div className="recipes-empty-state">
+            <h4>No recipes matched your search</h4>
+            <p>Try a different ingredient, title, or instruction keyword.</p>
+          </div>
+        ) : (
+          <div className="recipes-grid-wrap">
+            <ul className="recipes-grid">
+              {filteredRecipes.map((recipe) => (
+                <RecipeCard
+                  key={recipe.id}
+                  recipe={recipe}
+                  onEdit={handleEdit}
+                  onDelete={deleteRecipe}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
-          <div className="feature-card">
-            <h3>Share & Discover</h3>
-            <p>Share your own recipes and discover creations from others.</p>
+      {editForm && (
+        <section className="recipe-form-panel">
+          <div className="recipe-form">
+            <h3>Edit Recipe</h3>
+
+            <input
+              value={recipeName}
+              onChange={(e) => updateRecipeName(e.target.value)}
+              placeholder="Recipe name"
+            />
+
+            <div className="recipe-builder-row">
+              <input
+                value={ingredientInput}
+                onChange={(e) => updateIngredientInput(e.target.value)}
+                placeholder="Enter an ingredient"
+              />
+              <button onClick={addIngredient}>Add Ingredient</button>
+            </div>
+
+            <ul className="recipe-builder-list">
+              {ingredients.map((ingredient, index) => (
+                <li key={index}>
+                  <span>{ingredient}</span>
+                  <button onClick={() => removeIngredient(index)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="recipe-builder-row">
+              <input
+                value={instructionInput}
+                onChange={(e) => updateInstructionInput(e.target.value)}
+                placeholder="Enter a step"
+              />
+              <button onClick={addInstruction}>Add Step</button>
+            </div>
+
+            <ol className="recipe-builder-list recipe-builder-list-numbered">
+              {instructions.map((instruction, index) => (
+                <li key={index}>
+                  <span>{instruction}</span>
+                  <button onClick={() => removeInstruction(index)}>Remove</button>
+                </li>
+              ))}
+            </ol>
+
+            <div className="recipe-form-actions">
+              <button
+                onClick={() => {
+                  editRecipe(
+                    editingRecipeId,
+                    recipeName,
+                    ingredients,
+                    instructions,
+                  );
+                  updateEditForm(false);
+                  setEditingRecipeId(null);
+                  updateRecipeName("");
+                  updateIngredients([]);
+                  updateInstructions([]);
+                  updateIngredientInput("");
+                  updateInstructionInput("");
+                }}
+              >
+                Save Changes
+              </button>
+
+              <button
+                onClick={() => {
+                  updateEditForm(false);
+                  setEditingRecipeId(null);
+                  updateRecipeName("");
+                  updateIngredients([]);
+                  updateInstructions([]);
+                  updateIngredientInput("");
+                  updateInstructionInput("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </section>
-      </main>
-    </div>
-  );
+      )}
+    </main>
+  </div>
+);
+
 }
 
 export default Recipes;
