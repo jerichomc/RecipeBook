@@ -1,5 +1,3 @@
-
-
 function RecipeCard({
   recipe,
   onEdit,
@@ -17,12 +15,16 @@ function RecipeCard({
           <p>
             <strong>Ingredients:</strong>
           </p>
-          <ul>
+          <ul className="recipe-ingredient-list">
             {recipe.ingredients.map((ingredient, index) => (
-              <li key={index}>
-                {ingredient}
+              <li key={index} className="recipe-ingredient-row">
+                <span className="recipe-ingredient-name">{ingredient}</span>
+
                 {onAddIngredientToGroceries && (
-                  <button onClick={() => onAddIngredientToGroceries(ingredient)} className="grocery-btn">
+                  <button
+                    onClick={() => onAddIngredientToGroceries(ingredient)}
+                    className="recipe-ingredient-add-btn"
+                  >
                     Add
                   </button>
                 )}
@@ -47,7 +49,9 @@ function RecipeCard({
 
       <div className="recipe-card-actions">
         {onEdit && <button onClick={() => onEdit(recipe)}>Edit</button>}
-        {onDelete && <button onClick={() => onDelete(recipe.id)}>Delete</button>}
+        {onDelete && (
+          <button onClick={() => onDelete(recipe.id)}>Delete</button>
+        )}
       </div>
     </li>
   );

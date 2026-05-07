@@ -370,17 +370,59 @@
     margin-right: 20px;
     font-weight: bold;
 }
-
+/* 
 .grocery-btn {
     margin-left: 10px;
     padding: 2px 4px;
     margin-bottom: 2px;
-}
+} */
 
-.grocery-btn:hover {
+/* .grocery-btn:hover {
     cursor: pointer;
     background-color: #A47251;
+} */
+
+.recipe-ingredient-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
+.recipe-ingredient-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 248, 239, 0.55);
+}
+
+.recipe-ingredient-name {
+  color: #4c2f1f;
+  font-weight: 600;
+}
+
+.recipe-ingredient-add-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #a47251;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.recipe-ingredient-add-btn:hover {
+  background: #8d5f42;
+  transform: translateY(-1px);
+}
+
 
 
 .grocery-panel {
@@ -647,4 +689,14 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .recipe-ingredient-row {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.recipe-ingredient-add-btn {
+  width: 100%;
+}
+
 }
