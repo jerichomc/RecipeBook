@@ -20,6 +20,7 @@ function Recipes() {
   const [editingRecipeId, setEditingRecipeId] = useState(null);
   const [searchTerm, updateSearchTerm] = useState("");
   const [sortOrder, updateSortOrder] = useState("newest");
+  const [formError, setFormError] = useState("");
 
 
   const filteredRecipes = [...recipes].filter((recipe)=> { // Filter recipes based on search term
@@ -123,12 +124,32 @@ function Recipes() {
     );
   }
 
-  function handleEdit(recipe) {
+  function handleEdit(recipe) { //
   setEditingRecipeId(recipe.id);
   updateRecipeName(recipe.recipeName);
   updateIngredients(recipe.ingredients);
   updateInstructions(recipe.instructions);
   updateEditForm(true);
+}
+
+function validateRecipeForm() {
+  if(!recipeName.trim()) { // Check if recipe name is empty or just whitespace
+    setFormError("Recipe name is required."); // Set an error message if the recipe name is invalid
+    return false; // Return false to indicate that the form is not valid
+  }
+ 
+  if (ingredients.length === 0){ // Check if there are no ingredients added to the recipe
+    setFormError("At least one ingredient is required."); // Set an error message if no ingredients are added
+    return false; // Return false to indicate that the form is not valid
+  }
+
+  if (instructions.length === 0){ // Check if there are no instructions added to the recipe
+    setFormError("At least one instruction step is required."); // Set an error message if no instructions are added
+    return false; // Return false to indicate that the form is not valid
+  }
+
+  setFormError(""); // Clear any existing error messages if the form is valid
+  return true; // Return true to indicate that the form is valid
 }
 
 
@@ -161,6 +182,8 @@ function Recipes() {
         <section className="recipe-form-panel">
           <div className="recipe-form">
             <h3>Add a New Recipe</h3>
+            {formError && <p className="form-error">{formError}</p>}
+
 
             <input
               value={recipeName}
@@ -207,6 +230,7 @@ function Recipes() {
             <div className="recipe-form-actions">
               <button
                 onClick={() => {
+                  if (!validateRecipeForm()) return;
                   addRecipe(recipeName, ingredients, instructions);
                   updateShowForm(false);
                   updateRecipeName("");
@@ -227,6 +251,7 @@ function Recipes() {
                   updateInstructions([]);
                   updateIngredientInput("");
                   updateInstructionInput("");
+                  setFormError("");
                 }}
               >
                 Cancel
@@ -302,6 +327,8 @@ function Recipes() {
         <section className="recipe-form-panel">
           <div className="recipe-form">
             <h3>Edit Recipe</h3>
+            {formError && <p className="form-error">{formError}</p>}
+
 
             <input
               value={recipeName}
@@ -348,6 +375,8 @@ function Recipes() {
             <div className="recipe-form-actions">
               <button
                 onClick={() => {
+                  if (!validateRecipeForm()) return; // Validate the form before saving changes. If the form is not valid, exit the function and do not save changes
+
                   editRecipe(
                     editingRecipeId,
                     recipeName,
@@ -375,6 +404,7 @@ function Recipes() {
                   updateInstructions([]);
                   updateIngredientInput("");
                   updateInstructionInput("");
+                  setFormError("");
                 }}
               >
                 Cancel

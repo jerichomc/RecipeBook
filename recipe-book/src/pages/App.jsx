@@ -17,7 +17,7 @@ function App() {
       
 
       <footer className="footer">
-        <p>&copy; 2024 Recipe Book. All rights reserved.</p>
+        <p>&copy; 2026 Recipe Book.</p>
       </footer>
     </div>
   );

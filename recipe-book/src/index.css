@@ -514,6 +514,15 @@
   color: #6f5a4d;
 }
 
+.form-error {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fde7e1;
+    color: #9f3f2c;
+    font-weight: 600;
+}
+
 
 
 @media (max-width: 768px) {
