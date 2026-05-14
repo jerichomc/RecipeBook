@@ -100,6 +100,49 @@ function App() {
             </div>
           )}
         </section>
+        <section className="dashboard-actions-panel">
+          <div className="dashboard-preview-header">
+            <div>
+              <p className="recipes-kicker">What You Can Do</p>
+              <h3>Use the app like a real kitchen workflow</h3>
+            </div>
+          </div>
+
+          <div className="dashboard-actions-grid">
+            <article className="dashboard-action-card">
+              <h4>Browse Recipes</h4>
+              <p>
+                Search your saved recipes, sort them by date or name, and jump
+                back into your collection quickly.
+              </p>
+              <Link to="/recipes" className="dashboard-card-link">
+                Open Recipes
+              </Link>
+            </article>
+
+            <article className="dashboard-action-card">
+              <h4>Build Grocery Bag</h4>
+              <p>
+                Pull ingredients from recipes, combine duplicates automatically,
+                and track what you have already picked up.
+              </p>
+              <Link to="/groceries" className="dashboard-card-link">
+                Open Groceries
+              </Link>
+            </article>
+
+            <article className="dashboard-action-card">
+              <h4>Stay Organized</h4>
+              <p>
+                Keep your cooking workflow in one place with recipe storage,
+                grocery planning, and progress tracking.
+              </p>
+              <Link to="/recipes" className="dashboard-card-link">
+                Start Organizing
+              </Link>
+            </article>
+          </div>
+        </section>
       </main>
     </div>
   );
