@@ -16,10 +16,14 @@ function Groceries() {
     return savedGroceryList ? JSON.parse(savedGroceryList) : {}; // Start with an empty object if no grocery list is saved
   });
 
+  function saveGroceryList(updatedList) {
+    updateGroceryList(updatedList); // Update the grocery list state with the new list
+    localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Save the updated grocery list to localStorage
+  }
+
   function clearGroceryList() {
     const updatedList = {}; // Create an empty object to clear the grocery list
-    updateGroceryList(updatedList); // Update the state with the empty grocery list
-    localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Update localStorage with the cleared grocery list
+    saveGroceryList(updatedList); // Update the grocery list state and localStorage with the empty list
   }
 
   function handleAddIngredient(ingredient) {
@@ -46,8 +50,7 @@ function Groceries() {
         },
       };
     }
-    updateGroceryList(updatedList);
-    localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Update localStorage with the new grocery list after adding the ingredient
+    saveGroceryList(updatedList); // Update the grocery list state and localStorage with the new list
   }
 
   function toggleIngredientChecked(ingredient) {
@@ -66,16 +69,14 @@ function Groceries() {
     const updatedList = { ...groceryList };
     delete updatedList[ingredient];
 
-    updateGroceryList(updatedList);
-    localStorage.setItem("groceryList", JSON.stringify(updatedList));
+    saveGroceryList(updatedList); // Update the grocery list state and localStorage with the new list after removing the ingredient
   }
 
   function clearPurchased() {
     const updatedList = Object.fromEntries(
       Object.entries(groceryList).filter(([_, item]) => !item.checked), // Filter out ingredients that are marked as checked (purchased)
     );
-    updateGroceryList(updatedList);
-    localStorage.setItem("groceryList", JSON.stringify(updatedList)); // Update localStorage with the new grocery list after clearing purchased items
+    saveGroceryList(updatedList); // Update the grocery list state and localStorage with the new list after clearing purchased items
   }
 
   function decrementIngredient(ingredient) {
@@ -92,8 +93,7 @@ function Groceries() {
           quantity: groceryList[ingredient].quantity - 1, // Decrement the quantity of the ingredient by 1
         },
       };
-      updateGroceryList(updatedList);
-      localStorage.setItem("groceryList", JSON.stringify(updatedList));
+      saveGroceryList(updatedList); // Update the grocery list state and localStorage with the new list
     }
   }
 
@@ -106,8 +106,7 @@ function Groceries() {
           quantity: groceryList[ingredient].quantity + 1, // Increment the quantity of the ingredient by 1
         },
       };
-      updateGroceryList(updatedList);
-      localStorage.setItem("groceryList", JSON.stringify(updatedList));
+      saveGroceryList(updatedList); // Update the grocery list state and localStorage with the new list
     }
   }
 

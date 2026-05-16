@@ -370,17 +370,6 @@
     margin-right: 20px;
     font-weight: bold;
 }
-/* 
-.grocery-btn {
-    margin-left: 10px;
-    padding: 2px 4px;
-    margin-bottom: 2px;
-} */
-
-/* .grocery-btn:hover {
-    cursor: pointer;
-    background-color: #A47251;
-} */
 
 .recipe-ingredient-list {
   list-style: none;
@@ -507,49 +496,6 @@
     text-transform: capitalize;
 }
 
-.grocery-quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #f3e3d2;
-  border-radius: 999px;
-  padding: 6px 8px;
-}
-
-.grocery-quantity-controls button {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  background: #a47251;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.grocery-quantity-controls button:hover {
-  background: #8d5f42;
-}
-
-.grocery-quantity {
-  min-width: 20px;
-  text-align: center;
-  font-weight: 700;
-  color: #5c3b28;
-}
-
-.grocery-remove-btn {
-  border: none;
-  border-radius: 10px;
-  padding: 8px 12px;
-  background: #d96b4f;
-  color: white;
-  cursor: pointer;
-}
-
-.grocery-remove-btn:hover {
-  background: #bb553b;
-}
 
 .checked {
     text-decoration: line-through;
@@ -601,10 +547,6 @@
   background: #bb553b;
 }
 
-.grocery-empty {
-  margin: 0;
-  color: #6f5a4d;
-}
 
 .grocery-hero {
     margin-bottom: 24px;
